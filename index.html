@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <!-- Viewport: escala correcta en móvil, evita zoom automático -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- SEO básico -->
+  <title>Kime Time – Gimnasio de Boxeo, Kickboxing y Entrenamiento Funcional</title>
+  <meta name="description" content="Kime Time es el gimnasio donde entrenás boxeo, kickboxing, funcional y aparatos. Transformá tu cuerpo y mente con entrenadores profesionales. ¡Empezá hoy!" />
+  <meta name="keywords" content="gimnasio, boxeo, kickboxing, entrenamiento funcional, aparatos, fitness, gym, kime time" />
+
+  <!-- Open Graph: cómo se ve al compartir en redes sociales -->
+  <meta property="og:title" content="Kime Time – Entrená tu mejor versión" />
+  <meta property="og:description" content="Gimnasio de boxeo, kickboxing, funcional y aparatos. Para todos los niveles." />
+  <meta property="og:type" content="website" />
+
+  <!-- Fuentes de Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Hoja de estilos principal -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ════════════════════════════════════════════════════
+       NAVEGACIÓN FIJA
+       - Se mantiene fija en la parte superior (position: fixed en CSS)
+       - En mobile muestra el ícono hamburger y oculta los links
+       - Al hacer scroll agrega la clase "scrolled" (via JS) para oscurecer el fondo
+  ════════════════════════════════════════════════════ -->
+  <nav id="navbar">
+
+    <!-- Logo: también funciona como link al inicio -->
+    <a href="#" class="nav-logo">KIME<span>TIME</span></a>
+
+    <!-- Links del menú principal -->
+    <!-- En mobile se ocultan con CSS y aparecen al abrir el menú hamburger -->
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#disciplinas">Disciplinas</a></li>
+      <li><a href="#nosotros">Nosotros</a></li>
+      <li><a href="#beneficios">Beneficios</a></li>
+      <li><a href="#horarios">Horarios</a></li>
+      <!-- Botón CTA con estilo rojo diferenciado -->
+      <li>
+        <a href="https://wa.me/59892336511?text=Hola%2C%20vengo%20del%20sitio%20web%20y%20quiero%20m%C3%A1s%20informaci%C3%B3n."
+           class="nav-cta"
+           target="_blank"
+           rel="noopener noreferrer">
+          Comenzá
+        </a>
+      </li>
+    </ul>
+
+    <!-- Ícono hamburger: solo visible en mobile (display: none en desktop via CSS) -->
+    <!-- Al hacer click llama a toggleMenu() en script.js -->
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Abrir menú" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+  </nav>
+
+
+  <!-- ════════════════════════════════════════════════════
+       SECCIÓN HERO (Pantalla principal)
+       - Ocupa 100vh (toda la pantalla)
+       - Contiene: fondo animado, overlay oscuro, contenido central y scroll indicator
+  ════════════════════════════════════════════════════ -->
+  <section id="hero">
+
+    <!-- Fondo del hero: puede ser video o fallback con gradiente/animación CSS -->
+    <div class="hero-video-container">
+      <!-- Si tenés un video propio, descomentá la línea de abajo y reemplazá el src -->
+      <!-- <video autoplay muted loop playsinline src="tu-video.mp4"></video> -->
+      <div class="hero-bg-fallback"></div>
+    </div>
+
+    <!-- Capa oscura encima del fondo para mejorar legibilidad del texto -->
+    <div class="hero-overlay"></div>
+
+    <!-- Contenido principal del hero -->
+    <div class="hero-content">
+
+      <!-- Badge de ubicación / presentación del gimnasio -->
+      <div class="hero-badge">Gimnasio Premium · Avenida de las Instrucciones 8180</div>
+
+      <!-- Título principal con subtítulo en rojo -->
+      <h1>Kime Time<em>Se tú<br>mejor versión</em></h1>
+
+      <!-- Descripción breve de disciplinas -->
+      <p class="hero-sub">Aparatos · Funcional · Kickboxing · Boxeo — Todo en un solo lugar para todos los niveles</p>
+
+      <!-- Botones de llamada a la acción -->
+      <div class="hero-btns">
+        <a href="https://wa.me/59892336511?text=Hola%2C%20vengo%20del%20sitio%20web%20de%20Kime%20Time%20y%20necesito%20asesor%C3%ADa."
+           class="btn-primary"
+           target="_blank"
+           rel="noopener noreferrer">
+          Comenzá Hoy
+        </a>
+        <a href="#disciplinas" class="btn-secondary">Ver Clases</a>
+      </div>
+
+    </div>
+
+    <!-- Indicador de scroll animado en la parte inferior del hero -->
+    <div class="hero-scroll">
+      <div class="scroll-line"></div>
+      <span>Scroll</span>
+    </div>
+
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════
+       BARRA DE ESTADÍSTICAS
+       - Fila horizontal con números destacados sobre fondo rojo
+  ════════════════════════════════════════════════════ -->
+  <div class="stats-bar">
+    <div class="stat">
+      <span class="stat-num">500+</span>
+      <span class="stat-label">Alumnos<br>Activos</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <span class="stat-num">4</span>
+      <span class="stat-label">Disciplinas<br>Disponibles</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <span class="stat-num">10+</span>
+      <span class="stat-label">Años de<br>Experiencia</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <span class="stat-num">6</span>
+      <span class="stat-label">Días por<br>Semana</span>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════
+       MARQUEE / CINTA ANIMADA
+       - Texto que se desplaza horizontalmente de forma infinita (animación CSS)
+       - Duplicado 3 veces para que el loop sea fluido y sin saltos
+  ════════════════════════════════════════════════════ -->
+  <div class="marquee-wrap">
+    <div class="marquee">
+      <!-- Bloque 1 -->
+      <span>Aparatos</span><span class="accent">◆</span>
+      <span>Funcional</span><span class="accent">◆</span>
+      <span>Kickboxing</span><span class="accent">◆</span>
+      <span>K-1</span><span class="accent">◆</span>
+      <span>Muay Thai</span><span class="accent">◆</span>
+      <span>Defensa Personal</span><span class="accent">◆</span>
+      <span>Boxeo</span><span class="accent">◆</span>
+      <span>Entrenamientos Personalizados</span><span class="accent">◆</span>
+      <span>Kime Time</span><span class="accent">◆</span>
+      <!-- Bloque 2 (copia para loop continuo) -->
+      <span>Aparatos</span><span class="accent">◆</span>
+      <span>Funcional</span><span class="accent">◆</span>
+      <span>Kickboxing</span><span class="accent">◆</span>
+      <span>K-1</span><span class="accent">◆</span>
+      <span>Muay Thai</span><span class="accent">◆</span>
+      <span>Defensa Personal</span><span class="accent">◆</span>
+      <span>Boxeo</span><span class="accent">◆</span>
+      <span>Entrenamientos Personalizados</span><span class="accent">◆</span>
+      <span>Kime Time</span><span class="accent">◆</span>
+      <!-- Bloque 3 (copia para loop continuo) -->
+      <span>Aparatos</span><span class="accent">◆</span>
+      <span>Funcional</span><span class="accent">◆</span>
+      <span>Kickboxing</span><span class="accent">◆</span>
+      <span>K-1</span><span class="accent">◆</span>
+      <span>Muay Thai</span><span class="accent">◆</span>
+      <span>Defensa Personal</span><span class="accent">◆</span>
+      <span>Boxeo</span><span class="accent">◆</span>
+      <span>Entrenamientos Personalizados</span><span class="accent">◆</span>
+      <span>Kime Time</span><span class="accent">◆</span>
+    </div>
+  </div>
+
+
+  <!-- ════════════════════════════════════════════════════
+       SECCIÓN DISCIPLINAS
+       - Grid de tarjetas con imagen de fondo, ícono y texto
+       - Al hacer hover: escala la imagen y aparece la descripción (CSS)
+       - Clase "reveal" → animación al hacer scroll (via IntersectionObserver en JS)
+  ════════════════════════════════════════════════════ -->
+  <section id="disciplinas">
+
+    <div class="disciplines-header reveal">
+      <div class="section-label">Lo que ofrecemos</div>
+      <h2>Nuestras<br>Disciplinas</h2>
+      <p class="section-intro">Cuatro caminos distintos, una sola meta: tu mejor versión. Elegí la disciplina que te mueve.</p>
+    </div>
+
+    <div class="disciplines-grid">
+
+      <!-- Tarjeta: Aparatos -->
+      <div class="discipline-card reveal">
+        <div class="discipline-card-bg bg-aparatos"></div>
+        <div class="discipline-card-overlay"></div>
+        <div class="discipline-card-icon">🏋️</div>
+        <div class="discipline-card-content">
+          <h3>Aparatos</h3>
+          <p>Entrenamiento con máquinas y pesas guiadas para desarrollar fuerza, masa muscular y definición de forma segura y progresiva.</p>
+          <a href="#" class="btn-outline-sm">Más Información →</a>
+        </div>
+      </div>
+
+      <!-- Tarjeta: Funcional -->
+      <div class="discipline-card reveal" style="transition-delay: 0.1s">
+        <div class="discipline-card-bg bg-funcional"></div>
+        <div class="discipline-card-overlay"></div>
+        <div class="discipline-card-icon">🔥</div>
+        <div class="discipline-card-content">
+          <h3>Funcional</h3>
+          <p>Entrenamiento de alta intensidad que trabaja tu cuerpo de forma integral: fuerza, resistencia, coordinación y potencia.</p>
+          <a href="#" class="btn-outline-sm">Más Información →</a>
+        </div>
+      </div>
+
+      <!-- Tarjeta: Kickboxing -->
+      <div class="discipline-card reveal" style="transition-delay: 0.2s">
+        <div class="discipline-card-bg bg-kickboxing"></div>
+        <div class="discipline-card-overlay"></div>
+        <div class="discipline-card-icon">🥊</div>
+        <div class="discipline-card-content">
+          <h3>Kickboxing</h3>
+          <p>Combiná golpes de boxeo con patadas de artes marciales. Cardio explosivo, técnica y defensa personal en una sola clase.</p>
+          <a href="#" class="btn-outline-sm">Más Información →</a>
+        </div>
+      </div>
+
+      <!-- Tarjeta: K-1 -->
+      <div class="discipline-card reveal" style="transition-delay: 0.2s">
+        <div class="discipline-card-bg bg-k1"></div>
+        <div class="discipline-card-overlay"></div>
+        <div class="discipline-card-icon">🥊</div>
+        <div class="discipline-card-content">
+          <h3>K-1</h3>
+          <p>Combina boxeo, kickboxing y artes marciales en una disciplina intensa, técnica y explosiva.</p>
+          <a href="#" class="btn-outline-sm">Más Información →</a>
+        </div>
+      </div>
+
+      <!-- Tarjeta: Muay Thai Competición -->
+      <div class="discipline-card reveal" style="transition-delay: 0.2s">
+        <div class="discipline-card-bg bg-MuayThaiCompeticion"></div>
+        <div class="discipline-card-overlay"></div>
+        <div class="discipline-card-icon">🥊</div>
+        <div class="discipline-card-content">
+          <h3>Muay Thai Competición</h3>
+          <p>Combiná golpes de boxeo con patadas de artes marciales. Cardio explosivo, técnica y defensa personal en una sola clase.</p>
+          <a href="#" class="btn-outline-sm">Más Información →</a>
+        </div>
+      </div>
+
+      <!-- Tarjeta: Defensa Personal -->
+      <div class="discipline-card reveal" style="transition-delay: 0.2s">
+        <div class="discipline-card-bg bg-DefensaPersonal"></div>
+        <div class="discipline-card-overlay"></div>
+        <div class="discipline-card-icon">🥊</div>
+        <div class="discipline-card-content">
+          <h3>Defensa Personal</h3>
+          <p>Aprendé a prevenir, reaccionar y defenderte con técnicas prácticas, control emocional y respuesta efectiva.</p>
+          <a href="#" class="btn-outline-sm">Más Información →</a>
+        </div>
+      </div>
+
+      <!-- Tarjeta: Boxeo -->
+      <div class="discipline-card reveal" style="transition-delay: 0.3s">
+        <div class="discipline-card-bg bg-boxeo"></div>
+        <div class="discipline-card-overlay"></div>
+        <div class="discipline-card-icon">🥊</div>
+        <div class="discipline-card-content">
+          <h3>Boxeo</h3>
+          <p>El deporte rey. Técnica, ritmo, potencia y disciplina mental. Ideal para todos los niveles, desde principiantes hasta competidores.</p>
+          <a href="#" class="btn-outline-sm">Más Información →</a>
+        </div>
+      </div>
+
+      <!-- Tarjeta: Entrenamientos Personalizados -->
+      <div class="discipline-card reveal" style="transition-delay: 0.2s">
+        <div class="discipline-card-bg bg-EntrenamientosPersonalizados"></div>
+        <div class="discipline-card-overlay"></div>
+        <div class="discipline-card-icon">🥊</div>
+        <div class="discipline-card-content">
+          <h3>Entrenamientos Personalizados</h3>
+          <p>Rutinas diseñadas a medida según tus objetivos, condición física y nivel, con seguimiento profesional constante.</p>
+          <a href="#" class="btn-outline-sm">Más Información →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════
+       SECCIÓN NOSOTROS
+       - Layout de dos columnas: imagen izquierda + texto derecha
+       - En mobile colapsa a una sola columna y oculta la imagen
+  ════════════════════════════════════════════════════ -->
+  <section id="nosotros">
+
+    <!-- Columna izquierda: imagen con badge circular encima -->
+    <div class="about-visual reveal">
+      <div class="about-img"></div>
+      <!-- Badge "10+ Años" posicionado en esquina inferior derecha de la imagen -->
+      <div class="about-badge">
+        <strong>+10</strong>
+        <span>Años de<br>Experiencia</span>
+      </div>
+    </div>
+
+    <!-- Columna derecha: texto, pills y CTA -->
+    <div class="about-text reveal">
+      <div class="section-label">Sobre Nosotros</div>
+      <h2>Disciplina,<br>Comunidad y<br>Superación</h2>
+      <p>En <strong>Kime Time</strong>, somos más que un <strong>gimnasio</strong>. Somos una comunidad comprometida con el <strong>entrenamiento funcional</strong>, el <strong>boxeo</strong>, el <strong>kickboxing</strong> y el <strong>entrenamiento con aparatos</strong> de alto rendimiento.</p>
+      <p>Nuestros entrenadores certificados diseñan programas personalizados que se adaptan a todos los niveles — ya seas principiante o atleta competitivo. La salud, la disciplina y la superación personal son los pilares de cada clase en Kime Time.</p>
+      <p>Creemos que el verdadero cambio sucede cuando la mente y el cuerpo trabajan juntos. Por eso integramos <strong>entrenamiento físico</strong>, técnica deportiva y mentalidad ganadora en cada sesión.</p>
+      <!-- Pills: etiquetas descriptivas del gimnasio -->
+      <div class="about-pills">
+        <span class="pill">Entrenadores Certificados</span>
+        <span class="pill">Todos los Niveles</span>
+        <span class="pill">Equipamiento Premium</span>
+        <span class="pill">Comunidad Real</span>
+        <span class="pill">Resultados Medibles</span>
+      </div>
+      <a href="#cta-final" class="btn-primary">Conocé el Gimnasio</a>
+    </div>
+
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════
+       SECCIÓN BENEFICIOS
+       - Grid centrado de 4 items con ícono, título y descripción
+  ════════════════════════════════════════════════════ -->
+  <section id="beneficios">
+    <div class="section-label reveal">Por qué elegirnos</div>
+    <h2 class="reveal">Los Beneficios<br>de Entrenar con Nosotros</h2>
+
+    <div class="benefits-grid" style="margin-top: 3.5rem">
+
+      <div class="benefit-item reveal">
+        <div class="benefit-icon">❤️</div>
+        <h3>Mejorá tu Resistencia</h3>
+        <p>Clases diseñadas para elevar tu capacidad cardiovascular y mantenerte en movimiento más tiempo, con más energía.</p>
+      </div>
+
+      <div class="benefit-item reveal" style="transition-delay: 0.1s">
+        <div class="benefit-icon">💪</div>
+        <h3>Aumentá tu Fuerza</h3>
+        <p>Programas progresivos de fuerza funcional y muscular adaptados a tu nivel y tus objetivos específicos.</p>
+      </div>
+
+      <div class="benefit-item reveal" style="transition-delay: 0.2s">
+        <div class="benefit-icon">🧠</div>
+        <h3>Liberá el Estrés</h3>
+        <p>El entrenamiento es la mejor terapia. Salí de cada clase renovado, con la mente despejada y el cuerpo en equilibrio.</p>
+      </div>
+
+      <div class="benefit-item reveal" style="transition-delay: 0.3s">
+        <div class="benefit-icon">⭐</div>
+        <h3>Para Todos los Niveles</h3>
+        <p>Sin importar si empezás desde cero o tenés años de experiencia, nuestros programas se adaptan a vos.</p>
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════
+       SECCIÓN VIDEO
+       - Iframe de YouTube responsive con aspect-ratio 16:9
+  ════════════════════════════════════════════════════ -->
+  <section id="video-section">
+    <div class="section-label reveal">Viví la experiencia</div>
+    <h2 class="reveal">Viví la Experiencia<br>Kime Time</h2>
+    <p class="section-intro reveal">
+      Mirá lo que pasa dentro de nuestras instalaciones cada día. Energía, técnica y comunidad en estado puro.
+    </p>
+    <div class="video-wrapper reveal">
+      <iframe
+        src="https://www.youtube.com/embed/gRkoZYOV7eY"
+        title="Video Kime Time"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════
+       SECCIÓN RESEÑAS
+       - Grid de 3 tarjetas con estrellitas y comentarios de alumnos
+  ════════════════════════════════════════════════════ -->
+  <section id="resenas">
+    <div class="section-label reveal">Opiniones</div>
+    <h2 class="reveal">Lo que dicen nuestros alumnos</h2>
+    <p class="section-intro reveal">
+      Cada experiencia cuenta. Conocé lo que viven quienes entrenan en Kime Time.
+    </p>
+
+    <div class="reviews-grid">
+
+      <div class="review-card reveal">
+        <div class="review-stars">★★★★★</div>
+        <p>Muy buen ambiente, excelentes profes y entrenamientos exigentes pero motivadores.</p>
+        <strong>Alumno Kime Time</strong>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-stars">★★★★★</div>
+        <p>Se nota el compromiso, la técnica y la energía en cada clase. Súper recomendable.</p>
+        <strong>Alumno Kime Time</strong>
+      </div>
+
+      <div class="review-card reveal">
+        <div class="review-stars">★★★★★</div>
+        <p>Un lugar ideal para mejorar física y mentalmente, con acompañamiento constante.</p>
+        <strong>Alumno Kime Time</strong>
+      </div>
+
+    </div>
+
+    <div class="reviews-cta reveal">
+      <a href="https://wa.me/59892366511?text=Hola%2C%20quiero%20dejar%20mi%20opini%C3%B3n%20sobre%20Kime%20Time."
+         class="btn-primary"
+         target="_blank"
+         rel="noopener noreferrer">
+        Dejar mi opinión
+      </a>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════
+       SECCIÓN CTA FINAL
+       - Llamada a la acción final con fondo oscuro y texto grande
+       - Botón directo a WhatsApp para inscribirse
+  ════════════════════════════════════════════════════ -->
+  <section id="cta-final">
+    <div class="content">
+      <div class="section-label">El momento es ahora</div>
+      <h2>Tu transformación<br><em style="color:var(--red); font-style:normal">empieza hoy</em></h2>
+      <p>Dejá de esperar el momento perfecto. Ese momento eres vos, es ahora y es Kime Time. Unite a nuestra comunidad y comenzá el cambio real.</p>
+      <a href="https://wa.me/59892336511?text=Hola%2C%20quiero%20inscribirme."
+         class="btn-primary btn-xl"
+         target="_blank"
+         rel="noopener noreferrer">
+        Inscribirme Ahora
+      </a>
+    </div>
+  </section>
+
+
+  <!-- ════════════════════════════════════════════════════
+       FOOTER
+       - id="horarios" para que el link del nav funcione como ancla
+       - Grid de 4 columnas: marca, horarios, contacto, mapa
+       - En mobile colapsa a 1 columna
+  ════════════════════════════════════════════════════ -->
+  <footer id="horarios">
+
+    <div class="footer-grid">
+
+      <!-- Columna 1: Logo + descripción + redes sociales -->
+      <div class="footer-brand">
+        <a href="#" class="nav-logo">KIME<span>TIME</span></a>
+        <p>El gimnasio donde el boxeo, kickboxing, entrenamiento funcional y aparatos se unen para transformarte. Para todos los niveles, todos los días.</p>
+        <div class="social-links" style="margin-top: 1.5rem">
+          <a href="https://www.instagram.com/kime__luciano_pais?igsh=MTBhZWhucHA2dGZoaw%3D%3D&utm_source=qr" class="social-link" aria-label="Instagram" target="_blank" rel="noopener noreferrer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="https://www.facebook.com/gymkime?mibextid=wwXIfr" class="social-link" aria-label="Facebook" target="_blank" rel="noopener noreferrer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
+          </a>
+          <a href="#" class="social-link" aria-label="TikTok">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.3 6.3 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V9a8.16 8.16 0 004.77 1.53V7.08a4.85 4.85 0 01-1-.39z"/></svg>
+          </a>
+          <a href="https://wa.me/59892366511?text=Hola%2C%20vengo%20del%20sitio%20web." class="social-link" aria-label="WhatsApp" target="_blank" rel="noopener noreferrer">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Columna 2: Horarios de clases -->
+      <div class="footer-col">
+        <h4>Horarios</h4>
+        <ul>
+          <li><strong>Kickboxing, K-1 y Boxeo</strong></li>
+          <li>Lunes a viernes — 10 hs</li>
+          <li style="margin-top: 0.8rem"><strong>Infantiles / Adolescentes</strong></li>
+          <li>Lun, miér y vier — 17:15 hs / 19 hs</li>
+          <li style="margin-top: 0.8rem"><strong>Kickboxing / K-1 Adultos</strong></li>
+          <li>Lunes a viernes — 20 hs</li>
+          <li style="margin-top: 0.8rem"><strong>Funcional</strong></li>
+          <li>Lun, miér y vier — 09 hs o 18 hs</li>
+          <li>Mar y jue — 19 hs</li>
+          <li style="margin-top: 0.8rem"><strong>Boxeo</strong></li>
+          <li>Lunes a viernes — 18 hs</li>
+          <li style="margin-top: 0.8rem"><strong>Personalizados</strong></li>
+          <li>A coordinar</li>
+        </ul>
+      </div>
+
+      <!-- Columna 3: Datos de contacto + link a WhatsApp -->
+      <div class="footer-col">
+        <h4>Contacto</h4>
+        <ul>
+          <li>📍 Avda de las Instrucciones 8180 casi Cno. Carlos Linneo, Montevideo</li>
+          <li style="margin-top: 0.8rem">
+            <a href="https://wa.me/59892366511?text=Hola%2C%20vengo%20del%20sitio%20web."
+               target="_blank"
+               rel="noopener noreferrer"
+               style="color: inherit; text-decoration: none; display: inline-flex; align-items: center; gap: 0.55rem;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M20.52 3.48A11.86 11.86 0 0 0 12.06 0C5.55 0 .24 5.31.24 11.82c0 2.08.54 4.1 1.57 5.88L0 24l6.47-1.69a11.8 11.8 0 0 0 5.59 1.42h.01c6.51 0 11.82-5.31 11.82-11.82 0-3.16-1.23-6.13-3.37-8.43ZM12.07 21.7h-.01a9.88 9.88 0 0 1-5.03-1.37l-.36-.21-3.84 1 1.03-3.75-.24-.39a9.82 9.82 0 0 1-1.5-5.17c0-5.42 4.41-9.83 9.84-9.83 2.63 0 5.11 1.02 6.97 2.88a9.79 9.79 0 0 1 2.87 6.96c0 5.42-4.41 9.83-9.83 9.83Zm5.39-7.38c-.29-.15-1.71-.85-1.98-.95-.26-.1-.46-.15-.65.15-.19.29-.75.95-.92 1.15-.17.19-.34.22-.63.07-.29-.15-1.23-.45-2.34-1.43-.86-.77-1.44-1.72-1.61-2.01-.17-.29-.02-.45.13-.6.13-.13.29-.34.43-.51.14-.17.19-.29.29-.48.1-.19.05-.36-.02-.51-.07-.15-.65-1.57-.89-2.15-.24-.57-.48-.49-.65-.5h-.55c-.19 0-.5.07-.77.36-.26.29-1 1-.99 2.43.02 1.43 1.03 2.81 1.17 3 .14.19 2.02 3.08 4.89 4.32.68.29 1.21.47 1.63.6.68.22 1.3.19 1.79.11.55-.08 1.71-.7 1.95-1.38.24-.68.24-1.26.17-1.38-.07-.12-.26-.19-.55-.34Z"/>
+              </svg>
+              <span>092 366 511</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Columna 4: Mapa embebido de Google Maps -->
+      <div class="footer-col">
+        <h4>Ubicación</h4>
+        <div class="map-embed">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3428.5986916044376!2d-56.13659776571827!3d-34.78537723591119!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x95a02becd1b4ea09%3A0x3618bffeaf75891c!2sGimnasio%20KIME!5e1!3m2!1ses!2suy!4v1773074226608!5m2!1ses!2suy"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+            allowfullscreen>
+          </iframe>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pie del footer: copyright + advertencia de edad + créditos -->
+    <div class="footer-bottom">
+      <p>© 2026 Kime Time. Todos los derechos reservados.</p>
+      <div class="footer-warning">
+        <div class="warning-dot"></div>
+        <span>No se admiten menores de 6 años</span>
+      </div>
+      <p>
+        Diseñado y desarrollado por
+        <a href="https://texeiramarketingdigitalydesarrolloweb.com/" target="_blank" rel="noopener noreferrer">
+          Texeira Marketing Digital y Desarrollo Web
+        </a>
+      </p>
+    </div>
+
+  </footer>
+
+  <!-- Script principal: al final del body para no bloquear la carga de la página -->
+  <script src="script.js"></script>
+
+</body>
+</html>

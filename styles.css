@@ -1,0 +1,1206 @@
+/* ════════════════════════════════════════════════════════════
+   KIME TIME — styles.css
+   Estructura:
+   1. Reset y Variables CSS
+   2. Scrollbar personalizada
+   3. Navegación (desktop + mobile)
+   4. Hero
+   5. Stats Bar
+   6. Marquee animado
+   7. Estilos de sección genéricos
+   8. Disciplinas
+   9. Nosotros / About
+   10. Beneficios
+   11. Video
+   12. Reseñas
+   13. CTA Final
+   14. Footer
+   15. Animaciones (keyframes + scroll reveal)
+   16. Media Queries responsive
+════════════════════════════════════════════════════════════ */
+
+
+/* ─────────────────────────────────────────────────
+   1. RESET & VARIABLES CSS
+   - Normaliza márgenes y paddings en todos los elementos
+   - Define colores, fuentes y altura del nav como variables
+   - Usar var(--nombre) en todo el resto del archivo
+───────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --red:         #e31e24;   /* Color principal: rojo Kime Time */
+  --red-dark:    #a01418;   /* Rojo más oscuro para hovers */
+  --red-glow:    #ff2d34;   /* Rojo brillante para efectos de luz */
+  --black:       #080808;   /* Negro casi puro para fondo principal */
+  --dark:        #111111;   /* Gris muy oscuro para secciones alternas */
+  --dark2:       #1a1a1a;   /* Gris oscuro para marquee */
+  --gray:        #888;      /* Gris medio para textos secundarios */
+  --light:       #f0f0f0;   /* Casi blanco (no se usa mucho) */
+  --white:       #ffffff;   /* Blanco puro */
+  --font-display: 'Bebas Neue', sans-serif;  /* Fuente para títulos grandes */
+  --font-body:    'Montserrat', sans-serif;  /* Fuente para texto general */
+  --nav-height:  92px;      /* Altura del navbar, usada para calcular padding-top del hero */
+}
+
+/* Scroll suave al hacer click en links de ancla (#seccion) */
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--black);
+  color: var(--white);
+  overflow-x: hidden; /* Evita scroll horizontal por el marquee y elementos absolutos */
+}
+
+
+/* ─────────────────────────────────────────────────
+   2. SCROLLBAR PERSONALIZADA (solo en navegadores WebKit: Chrome, Safari, Edge)
+───────────────────────────────────────────────── */
+::-webkit-scrollbar       { width: 6px; }
+::-webkit-scrollbar-track { background: var(--black); }
+::-webkit-scrollbar-thumb { background: var(--red); border-radius: 3px; }
+
+
+/* ─────────────────────────────────────────────────
+   3. NAVEGACIÓN
+   - Fija en la parte superior de la pantalla (position: fixed)
+   - Logo a la izquierda, links al centro/derecha, hamburger solo en mobile
+   - Clase ".scrolled" se agrega via JS al hacer scroll: oscurece el fondo
+───────────────────────────────────────────────── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 1000;
+  min-height: var(--nav-height);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 5%;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.96), rgba(0,0,0,0.78), transparent);
+  backdrop-filter: blur(6px);
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+/* Estado al hacer scroll: fondo más sólido y sombra roja sutil */
+nav.scrolled {
+  background: rgba(0,0,0,0.95);
+  box-shadow: 0 2px 20px rgba(227,30,36,0.15);
+}
+
+/* Logo del nav */
+.nav-logo {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  letter-spacing: 3px;
+  color: var(--white);
+  text-decoration: none;
+  position: relative;
+  z-index: 1001; /* Asegura que el logo quede sobre el menú mobile abierto */
+}
+.nav-logo span { color: var(--red); } /* "TIME" en rojo */
+
+/* Lista de links del nav (desktop) */
+.nav-links {
+  display: flex;
+  gap: 2.5rem;
+  list-style: none;
+  align-items: center;
+}
+.nav-links a {
+  color: rgba(255,255,255,0.8);
+  text-decoration: none;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--red); }
+
+/* Botón "Comenzá" dentro del nav: estilo rojo destacado */
+.nav-cta {
+  background: var(--red);
+  color: var(--white) !important;
+  padding: 0.6rem 1.4rem;
+  border-radius: 2px;
+  transition: background 0.2s !important;
+}
+.nav-cta:hover {
+  background: var(--red-dark) !important;
+  color: var(--white) !important;
+}
+
+/* ── HAMBURGER (solo visible en mobile, controlado con media query) ──
+   Tres líneas horizontales (spans) que se animan al abrir el menú
+   Estado activo (.active) se agrega via JS en toggleMenu()           */
+.hamburger {
+  display: none;             /* Oculto en desktop */
+  flex-direction: column;
+  gap: 5px;
+  cursor: pointer;
+  /* position:fixed saca el hamburger del stacking context del nav,
+     así su z-index funciona globalmente y siempre queda encima del overlay */
+  position: fixed;
+  top: 20px;
+  right: 5%;
+  z-index: 99999;
+  background: none;
+  border: none;
+  padding: 4px;
+}
+.hamburger span {
+  width: 26px;
+  height: 2px;
+  background: white;
+  transition: 0.3s;
+  display: block;
+}
+
+/* Animación del hamburger al estado "abierto":
+   - Primera línea rota +45°
+   - Segunda línea desaparece
+   - Tercera línea rota -45° */
+.hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.hamburger.active span:nth-child(2) { opacity: 0; }
+.hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+
+/* ─────────────────────────────────────────────────
+   4. HERO
+   - Pantalla completa (100vh) con fondo animado y contenido centrado
+   - padding-top compensa la altura del nav fijo para que el contenido no quede debajo
+───────────────────────────────────────────────── */
+#hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding-top: calc(var(--nav-height) + 40px);
+}
+
+/* Contenedor del video/fallback: ocupa toda la sección */
+.hero-video-container {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.hero-video-container video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: saturate(0.6) brightness(0.55);
+}
+
+/* Fondo alternativo cuando no hay video: gradiente + patrón de líneas + letra "K" gigante */
+.hero-bg-fallback {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 30% 50%, rgba(227,30,36,0.25) 0%, transparent 60%),
+    linear-gradient(135deg, #0a0a0a 0%, #1a0505 50%, #0a0a0a 100%);
+}
+
+/* Patrón de líneas sobre el fallback */
+.hero-bg-fallback::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 60px,
+      rgba(227,30,36,0.04) 60px,
+      rgba(227,30,36,0.04) 61px
+    ),
+    repeating-linear-gradient(
+      90deg,
+      transparent,
+      transparent 60px,
+      rgba(255,255,255,0.02) 60px,
+      rgba(255,255,255,0.02) 61px
+    );
+}
+
+/* Letra "K" decorativa enorme en el fondo */
+.hero-bg-fallback::after {
+  content: 'K';
+  position: absolute;
+  right: -2%;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: var(--font-display);
+  font-size: 60vw;
+  line-height: 1;
+  color: rgba(227,30,36,0.04);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Capa oscura sobre el fondo para mejorar legibilidad del texto */
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,0,0,0.3) 0%,
+    rgba(0,0,0,0.5) 50%,
+    rgba(0,0,0,0.85) 100%
+  );
+}
+
+/* Contenido del hero: badge + h1 + subtítulo + botones */
+.hero-content {
+  position: relative;
+  z-index: 2;
+  text-align: center;
+  padding: 0 5%;
+  max-width: 900px;
+  width: 100%;
+}
+
+/* Badge de presentación (borde rojo, texto uppercase) */
+.hero-badge {
+  display: inline-block;
+  border: 1px solid var(--red);
+  color: var(--red);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  padding: 0.4rem 1.2rem;
+  margin-bottom: 1.8rem;
+  animation: fadeDown 0.8s ease both;
+  max-width: 100%;
+}
+
+/* Título principal: escala con clamp() para ser responsive */
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 9vw, 7.5rem);
+  line-height: 0.95;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: fadeUp 0.9s 0.2s ease both;
+}
+h1 em {
+  color: var(--red);
+  font-style: normal;
+  display: block;
+}
+
+/* Subtítulo del hero */
+.hero-sub {
+  margin: 1.5rem auto;
+  font-size: clamp(0.9rem, 2vw, 1.1rem);
+  color: rgba(255,255,255,0.75);
+  font-weight: 500;
+  letter-spacing: 1px;
+  max-width: 550px;
+  animation: fadeUp 0.9s 0.4s ease both;
+}
+
+/* Contenedor de botones del hero */
+.hero-btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 2.5rem;
+  animation: fadeUp 0.9s 0.6s ease both;
+}
+
+/* ── BOTONES GLOBALES ── */
+.btn-primary {
+  background: var(--red);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 800;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 1.1rem 2.8rem;
+  border: none;
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+  box-shadow: 0 0 30px rgba(227,30,36,0.4);
+}
+.btn-primary:hover {
+  background: var(--red-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 40px rgba(227,30,36,0.6);
+}
+
+.btn-secondary {
+  background: transparent;
+  color: var(--white);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 1.1rem 2.8rem;
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 2px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  transition: border-color 0.2s, background 0.2s;
+}
+.btn-secondary:hover {
+  border-color: var(--white);
+  background: rgba(255,255,255,0.08);
+}
+
+/* Indicador de scroll (línea animada + texto "Scroll") */
+.hero-scroll {
+  position: absolute;
+  bottom: 2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  animation: fadeUp 1s 1s ease both;
+}
+.hero-scroll span {
+  font-size: 0.6rem;
+  letter-spacing: 3px;
+  color: rgba(255,255,255,0.4);
+  text-transform: uppercase;
+}
+.scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+  animation: scrollLine 1.5s ease-in-out infinite;
+}
+
+
+/* ─────────────────────────────────────────────────
+   5. BARRA DE ESTADÍSTICAS
+   - Fila roja con números grandes y etiquetas
+   - En mobile se ocultan los divisores verticales
+───────────────────────────────────────────────── */
+.stats-bar {
+  background: var(--red);
+  padding: 1.2rem 5%;
+  display: flex;
+  justify-content: center;
+  gap: 5%;
+  flex-wrap: wrap;
+}
+.stat {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  letter-spacing: 1px;
+  color: var(--white);
+}
+.stat-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+  line-height: 1.3;
+}
+/* Línea divisora entre stats */
+.stat-divider { width: 1px; height: 2rem; background: rgba(255,255,255,0.3); }
+
+
+/* ─────────────────────────────────────────────────
+   6. MARQUEE ANIMADO
+   - Texto que se desplaza de derecha a izquierda de forma infinita
+   - Se necesita duplicar el contenido en el HTML para que no se vea el salto
+───────────────────────────────────────────────── */
+.marquee-wrap {
+  overflow: hidden;
+  border-top: 1px solid rgba(227,30,36,0.2);
+  border-bottom: 1px solid rgba(227,30,36,0.2);
+  background: var(--dark2);
+  padding: 1.2rem 0;
+}
+.marquee {
+  display: flex;
+  gap: 3rem;
+  animation: marquee 20s linear infinite; /* Animación definida en sección 15 */
+  width: max-content;
+}
+.marquee span {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.15);
+  white-space: nowrap;
+}
+.marquee span.accent { color: var(--red); } /* Diamantes ◆ en rojo */
+
+
+/* ─────────────────────────────────────────────────
+   7. ESTILOS DE SECCIÓN GENÉRICOS
+   - Padding consistente en todas las secciones
+   - Labels rojos, títulos con font-display, intro text
+───────────────────────────────────────────────── */
+section { padding: 6rem 5%; }
+
+.section-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 0.8rem;
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.section-intro {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.6);
+  max-width: 550px;
+  line-height: 1.7;
+  margin-top: 1rem;
+}
+
+
+/* ─────────────────────────────────────────────────
+   8. DISCIPLINAS
+   - Grid de tarjetas con imagen de fondo
+   - Hover: escala la imagen y revela el texto descriptivo
+───────────────────────────────────────────────── */
+#disciplinas { background: var(--dark); }
+
+.disciplines-header { margin-bottom: 3.5rem; }
+
+/* Grid responsivo: columnas de mínimo 260px, máximo 1fr */
+.disciplines-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+/* Tarjeta individual */
+.discipline-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+  aspect-ratio: 3/4;
+  cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: #111;
+}
+
+/* Imagen de fondo de la tarjeta */
+.discipline-card-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease, filter 0.35s ease;
+  filter: brightness(0.78) saturate(1.08);
+}
+/* Hover: la imagen escala y se aclara un poco */
+.discipline-card:hover .discipline-card-bg {
+  transform: scale(1.07);
+  filter: brightness(0.92) saturate(1.12);
+}
+
+/* Gradiente oscuro de abajo hacia arriba (para legibilidad del texto) */
+.discipline-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.28) 50%, rgba(0,0,0,0.08) 100%);
+  transition: background 0.3s ease;
+}
+/* Hover: overlay toma un tono rojizo */
+.discipline-card:hover .discipline-card-overlay {
+  background: linear-gradient(to top, rgba(180,15,20,0.58) 0%, rgba(0,0,0,0.22) 50%, rgba(0,0,0,0.03) 100%);
+}
+
+/* Ícono emoji en la esquina superior izquierda */
+.discipline-card-icon {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  width: 52px;
+  height: 52px;
+  background: rgba(227,30,36,0.96);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;
+  color: var(--white);
+  box-shadow: 0 0 22px rgba(227,30,36,0.35);
+  z-index: 2;
+}
+
+/* Contenido textual en la parte inferior de la tarjeta */
+.discipline-card-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 2rem 1.5rem;
+  z-index: 2;
+}
+
+.discipline-card h3 {
+  font-family: var(--font-display);
+  font-size: 2rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 0.6rem;
+  color: var(--white);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.45);
+}
+
+/* El párrafo descriptivo está oculto por defecto y aparece al hover */
+.discipline-card p {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.88);
+  line-height: 1.6;
+  margin-bottom: 1.2rem;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, opacity 0.4s ease;
+  opacity: 0;
+}
+.discipline-card:hover p {
+  max-height: 100px;
+  opacity: 1;
+}
+
+/* Botón de link inferior en tarjeta */
+.btn-outline-sm {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--white);
+  border-bottom: 1px solid rgba(255,255,255,0.75);
+  padding-bottom: 2px;
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-outline-sm:hover { border-color: var(--white); color: var(--white); }
+
+/* ── Imágenes de fondo de cada tarjeta de disciplina ── */
+.bg-aparatos {
+  background:
+    linear-gradient(135deg, rgba(26,26,26,0.18), rgba(45,45,45,0.14)),
+    url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=900&q=90') center/cover;
+  background-blend-mode: multiply;
+}
+.bg-funcional {
+  background:
+    linear-gradient(135deg, rgba(26,10,10,0.16), rgba(45,16,16,0.14)),
+    url('https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=900&q=90') center/cover;
+  background-blend-mode: multiply;
+}
+.bg-kickboxing {
+  background:
+    linear-gradient(135deg, rgba(10,10,26,0.16), rgba(16,16,45,0.14)),
+    url('https://www.tagoya.com/blog/wp-content/uploads/2023/10/Post-1-KickBoxing.jpg');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+}
+.bg-k1 {
+  background:
+    linear-gradient(135deg, rgba(20,10,10,0.16), rgba(35,12,12,0.14)),
+    url('https://mugendo.es/wp-content/uploads/Diseno-sin-titulo-2023-01-08T143901.402.jpg');
+  background-size: cover;
+  background-position: center 35%;
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+}
+.bg-MuayThaiCompeticion {
+  background-image:
+    linear-gradient(135deg, rgba(10,10,26,0.10), rgba(16,16,45,0.08)),
+    url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSZH4WpEG4foIphRd2YEbH3VQx1RM40Dn4gBw&s');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.bg-DefensaPersonal {
+  background:
+    linear-gradient(135deg, rgba(10,10,26,0.16), rgba(16,16,45,0.14)),
+    url('data:image/jpeg;base64,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');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+}
+.bg-EntrenamientosPersonalizados {
+  background:
+    linear-gradient(135deg, rgba(10,10,26,0.16), rgba(16,16,45,0.14)),
+    url('https://sportclubfontana.com/wp-content/uploads/2022/09/entrenamiento1.png');
+  background-size: cover;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-blend-mode: multiply;
+}
+.bg-boxeo {
+  background:
+    linear-gradient(135deg, rgba(10,14,10,0.16), rgba(16,26,16,0.14)),
+    url('https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=900&q=90') center/cover;
+  background-blend-mode: multiply;
+}
+
+
+/* ─────────────────────────────────────────────────
+   9. NOSOTROS / ABOUT
+   - Grid de 2 columnas: imagen a la izquierda, texto a la derecha
+   - En tablet/mobile se colapsa a 1 columna y se oculta la imagen
+───────────────────────────────────────────────── */
+#nosotros {
+  background: var(--black);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6rem;
+  align-items: center;
+}
+
+.about-visual { position: relative; }
+
+/* Imagen de la sección nosotros (fondo con gradiente y foto) */
+.about-img {
+  width: 100%;
+  aspect-ratio: 4/5;
+  border-radius: 4px;
+  background:
+    linear-gradient(135deg, #1a1a1a 0%, #2d0a0a 100%),
+    url('https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=700&q=80') center/cover;
+  background-blend-mode: multiply;
+  display: block;
+}
+
+/* Badge "+10 Años" superpuesto en esquina inferior derecha */
+.about-badge {
+  position: absolute;
+  bottom: -1.5rem;
+  right: -1.5rem;
+  background: var(--red);
+  width: 130px;
+  height: 130px;
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(227,30,36,0.5);
+}
+.about-badge strong {
+  font-family: var(--font-display);
+  font-size: 2.2rem;
+  letter-spacing: 1px;
+}
+.about-badge span {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.85);
+}
+
+.about-text h2 { margin-bottom: 1.5rem; }
+.about-text p {
+  color: rgba(255,255,255,0.65);
+  line-height: 1.8;
+  font-size: 0.95rem;
+  margin-bottom: 1.2rem;
+}
+.about-text p strong { color: var(--white); }
+
+/* Pills / etiquetas descriptivas */
+.about-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin: 1.8rem 0;
+}
+.pill {
+  border: 1px solid rgba(227,30,36,0.4);
+  color: rgba(255,255,255,0.7);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.4rem 1rem;
+  border-radius: 50px;
+}
+
+
+/* ─────────────────────────────────────────────────
+   10. BENEFICIOS
+   - Sección centrada con grid de 4 items
+───────────────────────────────────────────────── */
+#beneficios {
+  background: var(--dark);
+  text-align: center;
+}
+
+.benefits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 2rem;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.benefit-item {
+  padding: 2.5rem 2rem;
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 4px;
+  transition: border-color 0.3s, transform 0.3s;
+  background: rgba(255,255,255,0.02);
+}
+.benefit-item:hover {
+  border-color: var(--red);
+  transform: translateY(-6px);
+}
+
+/* Ícono circular rojo */
+.benefit-icon {
+  width: 60px;
+  height: 60px;
+  background: var(--red);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+  font-size: 1.5rem;
+}
+.benefit-item h3 {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+.benefit-item p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.6;
+}
+
+
+/* ─────────────────────────────────────────────────
+   11. VIDEO
+   - Iframe de YouTube en contenedor con aspect-ratio 16:9
+   - Bordes y sombra roja para consistencia visual
+───────────────────────────────────────────────── */
+#video-section {
+  background: var(--black);
+  text-align: center;
+  padding: 6rem 5%;
+}
+#video-section h2 { margin-bottom: 1rem; }
+#video-section .section-intro { margin: 0 auto 3rem; }
+
+.video-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 9;
+  border-radius: 4px;
+  overflow: hidden;
+  border: 1px solid rgba(227,30,36,0.2);
+  box-shadow: 0 0 80px rgba(227,30,36,0.15);
+  background: #000;
+}
+.video-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+
+
+/* ─────────────────────────────────────────────────
+   12. RESEÑAS
+   - Grid de 3 tarjetas con estrellas y texto
+───────────────────────────────────────────────── */
+#resenas {
+  background: var(--dark);
+  text-align: center;
+  padding: 6rem 5%;
+}
+#resenas h2 { margin-bottom: 1rem; }
+#resenas .section-intro { margin: 0 auto 3rem; }
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+  max-width: 1000px;
+  margin: 0 auto 2.5rem;
+}
+
+.review-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px;
+  padding: 2rem 1.5rem;
+  text-align: left;
+  transition: border-color 0.3s;
+}
+.review-card:hover { border-color: var(--red); }
+
+.review-stars {
+  color: var(--red);
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  letter-spacing: 2px;
+}
+.review-card p {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+}
+.review-card strong {
+  font-size: 0.72rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.reviews-cta { margin-top: 1rem; }
+
+
+/* ─────────────────────────────────────────────────
+   13. CTA FINAL
+   - Fondo oscuro con gradiente rojo radial y letras "KT" decorativas
+   - Botón grande de inscripción
+───────────────────────────────────────────────── */
+#cta-final {
+  padding: 8rem 5%;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--dark);
+}
+
+/* Gradiente rojo radial centrado como efecto de luz */
+#cta-final::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center, rgba(227,30,36,0.15) 0%, transparent 70%);
+}
+
+/* Letras "KT" decorativas enormes al fondo */
+#cta-final::after {
+  content: 'KT';
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-display);
+  font-size: 40vw;
+  color: rgba(227,30,36,0.04);
+  pointer-events: none;
+  line-height: 1;
+}
+
+#cta-final .content { position: relative; z-index: 1; }
+
+#cta-final h2 {
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  margin-bottom: 1rem;
+}
+#cta-final p {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.6);
+  max-width: 500px;
+  margin: 0 auto 2.5rem;
+  line-height: 1.7;
+}
+
+/* Variante del botón primario: más grande para CTAs importantes */
+.btn-xl {
+  font-size: 1rem;
+  padding: 1.3rem 3.5rem;
+  letter-spacing: 3px;
+}
+
+
+/* ─────────────────────────────────────────────────
+   14. FOOTER
+   - Grid de 4 columnas: logo/marca, horarios, contacto, mapa
+   - Pie con copyright, advertencia de edad, créditos
+───────────────────────────────────────────────── */
+footer {
+  background: #050505;
+  border-top: 1px solid rgba(227,30,36,0.2);
+  padding: 4rem 5% 2rem;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  gap: 3rem;
+  margin-bottom: 3rem;
+}
+
+.footer-brand .nav-logo { font-size: 2.5rem; display: block; margin-bottom: 1rem; }
+.footer-brand p {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.7;
+  max-width: 280px;
+}
+
+.footer-col h4 {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--red);
+  margin-bottom: 1.2rem;
+}
+.footer-col ul { list-style: none; }
+.footer-col ul li {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.5);
+  margin-bottom: 0.6rem;
+  line-height: 1.5;
+}
+.footer-col ul li strong { color: rgba(255,255,255,0.8); }
+
+/* Íconos de redes sociales */
+.social-links { display: flex; gap: 0.8rem; margin-top: 0.5rem; }
+.social-link {
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 2px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.5);
+  text-decoration: none;
+  transition: border-color 0.2s, color 0.2s;
+}
+.social-link:hover { border-color: var(--red); color: var(--red); }
+
+/* Mapa de Google Maps embebido */
+.map-embed {
+  width: 100%;
+  height: 220px;
+  margin-top: 1rem;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 4px;
+  overflow: hidden;
+  background: #111;
+}
+.map-embed iframe {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: 0;
+}
+
+/* Barra inferior del footer */
+.footer-bottom {
+  border-top: 1px solid rgba(255,255,255,0.07);
+  padding-top: 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.footer-bottom p { font-size: 0.72rem; color: rgba(255,255,255,0.3); letter-spacing: 1px; }
+.footer-bottom a { color: rgba(255,255,255,0.5); text-decoration: none; }
+.footer-bottom a:hover { color: var(--red); }
+
+/* Advertencia de edad mínima */
+.footer-warning {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.3);
+}
+.warning-dot { width: 6px; height: 6px; background: var(--red); border-radius: 50%; flex-shrink: 0; }
+
+
+/* ─────────────────────────────────────────────────
+   15. ANIMACIONES (Keyframes)
+   - fadeUp / fadeDown: usados en el hero con animation-delay escalonado
+   - scrollLine: parpadeo suave del indicador de scroll
+   - marquee: desplazamiento horizontal del texto animado
+   - .reveal / .reveal.visible: animación de entrada al hacer scroll (via JS)
+───────────────────────────────────────────────── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes scrollLine {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.2; }
+}
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-33.33%); } /* Mueve 1/3 (un bloque) para loop perfecto con 3 copias */
+}
+
+/* Clase base: el elemento empieza invisible y desplazado hacia abajo */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+/* Cuando el IntersectionObserver en JS detecta que está visible, agrega esta clase */
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+
+/* ─────────────────────────────────────────────────
+   16. MEDIA QUERIES — RESPONSIVE
+   Breakpoints:
+   - 900px: tablet → colapsa nosotros, footer a 2 columnas
+   - 680px: mobile → muestra hamburger, menú fullscreen, ajustes de fuente/padding
+───────────────────────────────────────────────── */
+
+/* ── TABLET (≤ 900px) ── */
+@media (max-width: 900px) {
+  :root { --nav-height: 84px; }
+
+  /* Hero: ajusta el padding-top por la altura del nav */
+  #hero { padding-top: calc(var(--nav-height) + 30px); }
+
+  /* Nosotros: una sola columna, imagen oculta */
+  #nosotros { grid-template-columns: 1fr; gap: 3rem; }
+  .about-visual { display: none; }
+
+  /* Footer: 2 columnas en tablet */
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+}
+
+/* ── MOBILE (≤ 680px) ── */
+@media (max-width: 680px) {
+  :root { --nav-height: 78px; }
+
+  /* Nav en mobile: padding reducido */
+  nav { padding: 1rem 5%; }
+
+  /* Hero: sin min-height fijo para que no sea demasiado largo en móvil */
+  #hero {
+    padding-top: calc(var(--nav-height) + 24px);
+    min-height: auto;
+  }
+
+  .hero-content { padding: 0 6%; }
+
+  .hero-badge {
+    font-size: 0.58rem;
+    letter-spacing: 2px;
+    padding: 0.45rem 0.9rem;
+    margin-bottom: 1.2rem;
+  }
+
+  /* --- MENÚ MOBILE ---
+     El nav tiene position:fixed + z-index:1000 lo que crea su propio
+     stacking context. Cualquier hijo fixed queda atrapado en ese contexto.
+     Solución: hamburger con position:fixed (definido arriba, fuera de media query)
+     y overlay con z-index muy alto para salir del contexto del nav. */
+
+  /* Links ocultos por defecto en mobile */
+  .nav-links { display: none; }
+
+  /* Muestra el hamburger */
+  .hamburger { display: flex; }
+
+  /* Logo sin cambios de z-index (el hamburger fixed ya está sobre todo) */
+  .nav-logo { font-size: 1.8rem; }
+
+  /* Overlay fullscreen al abrir el menu */
+  .nav-links.open {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100vw;
+    height: 100dvh;
+    background: rgba(8,8,8,0.98);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    justify-content: center;
+    align-items: center;
+    gap: 2.5rem;
+    z-index: 99998;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+  }
+  .nav-links.open li { list-style: none; }
+  .nav-links.open a {
+    font-size: 1.5rem;
+    letter-spacing: 3px;
+    color: var(--white);
+    text-decoration: none;
+    text-transform: uppercase;
+    font-weight: 700;
+    transition: color 0.2s;
+  }
+  .nav-links.open a:hover { color: var(--red); }
+  .nav-links.open .nav-cta {
+    background: var(--red);
+    padding: 0.9rem 2rem;
+    border-radius: 2px;
+    margin-top: 0.5rem;
+  }
+
+
+  /* Footer: 1 columna en mobile */
+  .footer-grid { grid-template-columns: 1fr; }
+
+  /* Stats bar: oculta divisores, más espacio entre items */
+  .stats-bar { gap: 2rem; }
+  .stat-divider { display: none; }
+
+  /* Título h1 más pequeño en mobile */
+  h1 { font-size: 3rem; }
+
+  /* Secciones: menos padding vertical */
+  section { padding: 4rem 5%; }
+}
