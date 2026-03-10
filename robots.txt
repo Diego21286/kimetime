@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://diego21286.github.io/kimetime/sitemap.xml
