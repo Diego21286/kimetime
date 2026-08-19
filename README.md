@@ -41,6 +41,28 @@ Crear una presencia digital moderna para el gimnasio que permita:
 - Google Fonts
 - GitHub Pages
 
+## Capturas del proyecto
+
+### Portada
+
+![Kime Time - Portada](docs/images/portada.png)
+
+### Disciplinas
+
+![Kime Time - Disciplinas](docs/images/disciplinas.png)
+
+### Beneficios
+
+![Kime Time - Beneficios](docs/images/beneficios.png)
+
+### Horarios
+
+![Kime Time - Horarios](docs/images/horarios.png)
+
+### Contacto
+
+![Kime Time - Contacto](docs/images/contacto.png)
+
 ## SEO
 
 El proyecto incluye elementos básicos para mejorar su presencia en buscadores:
@@ -62,18 +84,19 @@ kimetime/
 ├── robots.txt
 ├── sitemap.xml
 ├── googlefb904d09376376c6.html
+├── docs/
+│   └── images/
+│       ├── portada.png
+│       ├── disciplinas.png
+│       ├── beneficios.png
+│       ├── horarios.png
+│       └── contacto.png
 └── README.md
 ```
 
 ## Publicación
 
 El sitio se encuentra desplegado mediante **GitHub Pages** desde la rama `main`.
-
-## Próximas mejoras del repositorio
-
-- Incorporar capturas profesionales del sitio en `docs/images/`.
-- Agregar una portada visual al README.
-- Documentar las principales secciones del diseño con imágenes.
 
 ## Autor
 
